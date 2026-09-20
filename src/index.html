@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Dark Theme Toggle Switch</title>
+		<link rel="stylesheet" href="theme_toggle.css">
+		
+		<style>
+			body { font-family: "Ubuntu", "Roboto", "Arial", sans-serif; }
+			h1, h2, h3 { font-weight: normal; }
+
+			summary { font-size: 1.5em; }
+
+			.red     { color: color-mix(in oklab, #f00 60%, var(--theme-color-text)); }
+			.orange  { color: color-mix(in oklab, #f70 60%, var(--theme-color-text)); }
+			.yellow  { color: color-mix(in oklab, #ff0 60%, var(--theme-color-text)); }
+			.green   { color: color-mix(in oklab, #0f0 60%, var(--theme-color-text)); }
+			.cyan    { color: color-mix(in oklab, #0ff 60%, var(--theme-color-text)); }
+			.blue    { color: color-mix(in oklab, #33f 60%, var(--theme-color-text)); }
+			.purple  { color: color-mix(in oklab, #73f 60%, var(--theme-color-text)); }
+			.magenta { color: color-mix(in oklab, #f0f 60%, var(--theme-color-text)); }
+			.gray    { color: color-mix(in oklab, #777 80%, var(--theme-color-text)); }
+
+			.comment::before { content: "/* "; }
+			.comment::after  { content: " */"; }
+
+			.code { font-family: "Cascadia Code", monospace; }
+		</style>
+	</head>
+
+	<body>
+		<input type="checkbox" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" />
+		<div class="theme-toggle-spacer"></div>
+
+		<h1>Dark Theme Toggle Switch</h1>
+		<p>Version 1.2, made by <span class="blue">Pitri</span>. This is a small test page to show the dark mode toggle switch I made. It's by far not a new idea. There are plenty of similar animated toggle switches made by people who enjoy showing their fancy designs to the world. So, I don't claim the idea - far from it. What I do, however, is claim this particular implementation.</p>
+		<p>I wanted to see how far I can push the aesthetics of such a button without relying on any kind of external image file (including base64 embedding in the CSS file). I also decided to not rely on JavaScript.</p>
+
+		<details open>
+			<summary>How to use it</summary>
+			<p>In order to use it for yourself, link the stylesheet file in the website header, and create the toggle element (with the class <span class="gray code">.theme-toggle</span>) somewhere on the page. It will automatially glue itself to the top-right corner of the screen, and remain there even if you scroll down. I consider obstructed text after scrolling an acceptable sacrifice, unless it's in the first line. If you can not rule out text overlapping the top right corner, you should add a spacer element (with the class <span class="gray code">.theme-toggle-spacer</span>) as the first element in the <span class="gray code">&lt;body&gt;</span>. It acts as an appropriately sized element that forces text to flow around it. You can try it out by creating a collision between the switch and the website title (by zooming or window resizing).</p>
+		</details>
+
+		<details open>
+			<summary>CSS variables</summary>
+
+			<p>The <span class="gray code">:root</span> element defines a list of variables that can be customized:</p>
+			<p>
+				<table>
+					<tr>
+						<td class="red code">--theme-toggle-width:</td>
+						<td class="code">4rem</td>
+						<td class="gray comment">Width of the outer toggle element.</td>
+					</tr>
+					<tr>
+						<td class="orange code">--theme-toggle-height:</td>
+						<td class="code">2rem</td>
+						<td class="gray comment">Height of the outer toggle element.</td>
+					</tr>
+					<tr>
+						<td class="yellow code">--theme-toggle-margin:</td>
+						<td class="code">1rem</td>
+						<td class="gray comment">Distance to the website border.</td>
+					</tr>
+					<tr>
+						<td class="green code">--theme-toggle-pin-size:</td>
+						<td class="code">1.6rem</td>
+						<td class="gray comment">Diameter of the round pin inside the toggle element.</td>
+					</tr>
+					<tr>
+						<td class="blue code">--theme-color-dark:</td>
+						<td class="code">#111</td>
+						<td class="gray comment">Dark color of the theme.</td>
+					</tr>
+					<tr>
+						<td class="purple code">--theme-color-light:</td>
+						<td class="code">#eee</td>
+						<td class="gray comment">Bright color of the theme.</td>
+					</tr>
+				</table>
+			</p>
+			<p>The following variables are then deduced in <span class="gray code">:root</span>, conditionally depending on which mode we are currently in. The colors in <span class="gray code">body</span> are set to these, so most of the website design should already be configured. The variables are still available in case there's a deeper element which needs some extra styling.</p>
+			<p>
+				<table>
+					<tr>
+						<td class="red code">--theme-color-text:</td>
+						<td class="gray comment">Foreground/text/content color.</td>
+					</tr>
+					<tr>
+						<td class="orange code">--theme-color-back:</td>
+						<td class="gray comment">Background color.</td>
+					</tr>
+				</table>
+			</p>
+		</details>
+
+		<details open>
+			<summary>Other theming advice</summary>
+			<p>With changing background and text brightness, the usage of other highlight colors is slightly harder. Either you go through the effort of defining each color twice (once for light mode and once for dark mode), or you can utilize the CSS <span class="gray code">color-mix</span> feature to nudge a chosen color closer to the text color (assuming you have a CSS variable for that). The higher the percentage of the chosen color, the further it will stray away from the general text color.</p>
+			<p>This example defines <span class="red">red</span>, <span class="orange">orange</span>, <span class="yellow">yellow</span>, <span class="green">green</span>, <span class="cyan">cyan</span>, <span class="blue">blue</span>, <span class="purple">purple</span>, <span class="magenta">magenta</span> and <span class="gray">gray</span> this way.</p>
+		</details>
+
+		<details open>
+			<summary>Code snippets</summary>
+			<p>
+				<table>
+					<tr>
+						<td>Embedding the stylesheet:</td>
+						<td class="yellow code">&lt;link rel=&quot;stylesheet&quot; href=&quot;theme_toggle.css&quot;&gt;</td>
+					</tr>
+					<tr>
+						<td>Button element:</td>
+						<td colspan="2" class="green code">&lt;input type=&quot;checkbox&quot; class=&quot;theme-toggle&quot; title=&quot;Toggle dark mode&quot; aria-label=&quot;Toggle dark mode&quot; /&gt;</td>
+					</tr>
+					<tr>
+						<td>Spacer element:</td>
+						<td class="blue code">&lt;div class=&quot;theme-toggle-spacer&quot;&gt;&lt;/div&gt;</td>
+					</tr>
+					<tr>
+						<td>Adaptive color example:</td>
+						<td class="purple code">color-mix(in oklab, #73f 60%, var(--theme-color-text));</td>
+						<td class="gray comment">Avoid very bright or dark colors, as that will introduce inconsistent contrast across light and dark mode.</td>
+					</tr>
+				</table>
+			</p>
+		</details>
+
+		<details open>
+			<summary>Changelog</summary>
+			<h3 class="red">Version 1.0 (2025-01-28)</h3>
+			<ul>
+				<li>Designed the sun and moon slider.</li>
+				<li>Requires nested <span class="gray code">div</span>s with specific IDs: one for the slider and one for the celestial body inside.</li>
+				<li>Embedding the javascript file does the rest.</li>
+				<li>It uses <span class="gray code">localStorage</span> to remember the previous setting.</li>
+				<li>If that is not set, the initial theme gets deduced from the system preferences.</li>
+			</ul>
+			<h3 class="orange">Version 1.1 (2026-03-28)</h3>
+			<ul>
+				<li>The switch is now an <span class="gray code">input</span> checkbox and does not need an inner element for the pin/celestial body.</li>
+				<li>This makes this a pure CSS solution, making JavaScript obsolete for the core functionality.</li>
+				<li>Unfortunately, this version loses the system preference checks.</li>
+			</ul>
+			<h3 class="yellow">Version 1.2 (2026-09-20)</h3>
+			<ul>
+				<li>Website colors and button animations are now inverted if the user prefers light mode.</li>
+				<li>This makes dark mode the default for anyone who has no preference.</li>
+				<li>Accessibility feature: Animation doesn't play in reduced motion mode.</li>
+				<li>Accessibility feature: Keyboard element highlight support.</li>
+			</ul>
+		</details>
+
+		<p style="margin-top: 3em;">That's about it. Enjoy your theme toggle switch! <span class="blue" style="margin-left: 3em;">&mdash; Pitri</span></p>
+	</body>
+</html>

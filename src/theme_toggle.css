@@ -1,0 +1,140 @@
+/* v1.2 by Pitri, September 2026 */
+
+/* public-facing variables that the user may change */
+:root
+{
+	--theme-toggle-width: 4rem;
+	--theme-toggle-height: 2rem;
+	--theme-toggle-margin: 1rem;
+	--theme-toggle-pin-size: 1.6rem;
+
+	--theme-color-dark: #111;
+	--theme-color-light: #eee;
+}
+
+/* implementation variables: toggle switch design definitions */
+:root
+{
+	--theme-toggle-sky-dark:  linear-gradient(#003, #00f);
+	--theme-toggle-sky-light: linear-gradient(#6af, #47f);
+	--theme-toggle-body-dark:  radial-gradient(circle at 20% 20%, #333 50%, #fff 100%);
+	--theme-toggle-body-light: radial-gradient(circle at 50% 50%, #ff0, #fe0, #f80);
+	--theme-toggle-shine-dark:  rgba( 99, 165, 255, 0.7) 0 0 0.8rem 0.05rem;
+	--theme-toggle-shine-light: rgba(255, 255, 0, 0.7)   0 0 1.5rem 0.5rem;
+
+	--theme-toggle-inner-margin: calc((var(--theme-toggle-height) - var(--theme-toggle-pin-size)) / 2);
+	--theme-toggle-left: 0;
+	--theme-toggle-right: calc(var(--theme-toggle-width) - var(--theme-toggle-pin-size) - 2 * var(--theme-toggle-inner-margin));
+}
+
+/* deduced implementation variables: website colors and visual checkbox state */
+:root
+{
+	/* checkbox unset: dark mode */
+	--theme-color-text: var(--theme-color-light);
+	--theme-color-back: var(--theme-color-dark);
+	
+	--theme-toggle-sky: var(--theme-toggle-sky-dark);
+	--theme-toggle-body: var(--theme-toggle-body-dark);
+	--theme-toggle-shine: var(--theme-toggle-shine-dark);
+	--theme-toggle-position: var(--theme-toggle-left);
+
+	/* checkbox set: light mode */
+	&:has(.theme-toggle:checked)
+	{
+		--theme-color-text: var(--theme-color-dark);
+		--theme-color-back: var(--theme-color-light);
+
+		--theme-toggle-sky: var(--theme-toggle-sky-light);
+		--theme-toggle-body: var(--theme-toggle-body-light);
+		--theme-toggle-shine: var(--theme-toggle-shine-light);
+		--theme-toggle-position: var(--theme-toggle-right);
+	}
+}
+
+@media (prefers-color-scheme: light)
+{
+	:root
+	{
+		/* checkbox unset: light mode */
+		--theme-color-text: var(--theme-color-dark);
+		--theme-color-back: var(--theme-color-light);
+
+		--theme-toggle-sky: var(--theme-toggle-sky-light);
+		--theme-toggle-body: var(--theme-toggle-body-light);
+		--theme-toggle-shine: var(--theme-toggle-shine-light);
+		--theme-toggle-position: var(--theme-toggle-right);
+
+		/* checkbox set: dark mode */
+		&:has(.theme-toggle:checked)
+		{
+			--theme-color-text: var(--theme-color-light);
+			--theme-color-back: var(--theme-color-dark);
+
+			--theme-toggle-sky: var(--theme-toggle-sky-dark);
+			--theme-toggle-body: var(--theme-toggle-body-dark);
+			--theme-toggle-shine: var(--theme-toggle-shine-dark);
+			--theme-toggle-position: var(--theme-toggle-left);
+		}
+	}
+}
+
+body
+{
+	background-color: var(--theme-color-back);
+	color: var(--theme-color-text);
+}
+
+/* checkbox */
+input[type="checkbox"].theme-toggle
+{
+	position: fixed;
+	top:   var(--theme-toggle-margin);
+	right: var(--theme-toggle-margin);
+	overflow: hidden;
+
+	cursor: pointer;
+	appearance: none;
+	width:  var(--theme-toggle-width);
+	height: var(--theme-toggle-height);
+	border-radius: calc(var(--theme-toggle-height) / 2);
+	box-shadow: inset 0 0 0.2rem rgba(0, 0, 0, 0.5);
+	background: var(--theme-toggle-sky);
+
+	/* celestial body */
+	&::before
+	{
+		content: "";
+		position: absolute;
+
+		width:  var(--theme-toggle-pin-size);
+		height: var(--theme-toggle-pin-size);
+		border-radius: calc(var(--theme-toggle-pin-size) / 2);
+		margin: var(--theme-toggle-inner-margin);
+
+		left: var(--theme-toggle-position);
+		background-image: var(--theme-toggle-body);
+		box-shadow: var(--theme-toggle-shine);
+
+		transition: left 0.1s linear;
+		@media (prefers-reduced-motion: reduce)
+		{
+			transition: none;
+		}
+	}
+
+	/* keyboard support: element focus highlight */
+	&:focus-visible
+	{
+		outline: 0.15rem solid var(--theme-color-text);
+		outline-offset: 0.2rem;
+	}
+}
+
+.theme-toggle-spacer
+{
+	position: static;
+	float: right;
+	width:  calc(var(--theme-toggle-width)  + var(--theme-toggle-margin));
+	height: calc(var(--theme-toggle-height) + var(--theme-toggle-margin));    
+}
